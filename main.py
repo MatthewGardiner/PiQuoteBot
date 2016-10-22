@@ -35,9 +35,8 @@ def load_quotedb():
         quote_cache.append(quote[0])
 
 def quote(bot, update):
-    global quote_cache
     try:
-        quote = update.message.text.split(' ')[1]
+        quote = ' '.join(update.message.text.split(' ')[1:])
     except IndexError:
         update.message.reply_text('No quote specified!')
         return
