@@ -2,8 +2,6 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import os
 import sqlite3
 import random
-quote_cache = []
-conn = sqlite3.connect('quotes.db', check_same_thread=False)
 
 def seven(bot, update):
     if update.message.text.lower().split(' ')[0] in ["7", "seven", "seven!"]:
@@ -45,6 +43,9 @@ def quote(bot, update):
     update.message.reply_text("Quote added!")
 
 if __name__ == "__main__":
+    quote_cache = []
+    conn = sqlite3.connect('quotes.db', check_same_thread=False)
+
     create_schema()
     load_quotedb()
     updater = Updater(os.environ['TELEGRAM_API_KEY'])
