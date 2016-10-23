@@ -2,10 +2,19 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import os
 import sqlite3
 import random
+import re
 
+##def seven(bot, update):
+##    if update.message.text.lower().split(' ')[0] in ["7", "seven", "seven!"]:
+##        update.message.reply_text("Seven!")
+##
 def seven(bot, update):
-    if update.message.text.lower().split(' ')[0] in ["7", "seven", "seven!"]:
-        update.message.reply_text("Seven!")
+	expression = update.message.text.lower()
+	pmatch = re.match(r'^.*(7|(S|s)even(!*)).*$', expression, flags=0)
+
+	if pmatch:
+		update.message.reply_text("Seven!")
+
 
 def random_quote(bot, update):
     global quote_cache
@@ -48,7 +57,7 @@ if __name__ == "__main__":
 
     create_schema()
     load_quotedb()
-    updater = Updater(os.environ['TELEGRAM_API_KEY'])
+    updater = Updater('255205503:AAFyMwuEuXDUHulriwCFRKGVwpNDP3hZ-WE')	
     updater.dispatcher.add_handler(CommandHandler("quote", quote))
     updater.dispatcher.add_handler(CommandHandler("random_quote", random_quote))
     updater.dispatcher.add_handler(MessageHandler([Filters.text], seven))
