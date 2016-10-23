@@ -2,31 +2,27 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import os
 import sqlite3
 import random
+import re
 
 def seven(bot, update):
-    if update.message.text.lower().split(' ')[0] in ["7", "seven", "seven!"]:
+    if re.match("^.*(7|(S|s)even(!*)).*$", update.message.text):
         update.message.reply_text("Seven!")
 
 def random_quote(bot, update):
-    global quote_cache
     if len(quote_cache) > 0:
         update.message.reply_text(random.choice(quote_cache))
 
 def create_schema():
-    global conn
     c = conn.cursor()
     c.execute('CREATE TABLE IF NOT EXISTS quotes (text)')
     conn.commit()
 
 def save_to_quotedb(message):
-    global conn
     c = conn.cursor()
     c.execute('INSERT INTO quotes VALUES (?)', (message, ))
     conn.commit()
 
 def load_quotedb():
-    global conn
-    global quote_cache
     c = conn.cursor()
     c.execute('SELECT * FROM quotes')
     for quote in c.fetchall():
@@ -38,6 +34,9 @@ def quote(bot, update):
     except IndexError:
         update.message.reply_text('No quote specified!')
         return
+    if quote in quote_cache:
+    	update.message.reply_text('Fuck off, that quote is already added')
+	return
     save_to_quotedb(quote)
     quote_cache.append(quote)
     update.message.reply_text("Quote added!")
