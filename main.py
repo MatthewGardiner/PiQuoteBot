@@ -5,7 +5,7 @@ import random
 import re
 import time
 import threading
-QUEUE_DELAY = 1
+QUEUE_DELAY = 2.0
 messageQ = {}
 
 def seven(bot, update):
@@ -21,7 +21,7 @@ def message_queuer():
         if len(messageQ) > 0:
             random_idx = random.randint(0, len(messageQ) - 1)
             msg_parent = messageQ.keys()[random_idx]
-            msg_content = messageQ[msg_parent]
+            msg_content = messageQ.pop(msg_parent)
             msg_parent.reply_text(msg_content)
             time.sleep(QUEUE_DELAY)
 
