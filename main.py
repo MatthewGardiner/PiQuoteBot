@@ -51,7 +51,7 @@ def quote(bot, update):
         add_to_message_queue(update.message, 'No quote specified!')
         return
     if quote in quote_cache:
-    	add_to_message_queue(update.message, 'Fuck off, that quote is already added')
+    	add_to_message_queue(update.message, 'That quote is already added')
 	return
     save_to_quotedb(quote)
     quote_cache.append(quote)
